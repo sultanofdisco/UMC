@@ -1,8 +1,8 @@
 export const bodyToMission = (body) => {
     return {
         storeId: Number(body.storeId),
-        missionTitle: body.mission_title || "",
-        missionContent: body.mission_content || "",
+        missionTitle: body.missionTitle || "",
+        missionContent: body.missionContent || "",
         missionPoint: Number(body.missionPoint || 0)
     };
 }

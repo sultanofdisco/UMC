@@ -66,3 +66,20 @@ export const getReview = async (reviewId) => {
   const review = await prisma.review.findFirstOrThrow({ where: { id: reviewId } });
   return review;
 };
+
+export const findActiveMission = async (missionId, userId) => {
+    const userMission = await prisma.userMission.findFirst({
+        where: { missionId: missionId, userId: userId }
+    });
+    return userMission;
+}
+
+export const addMission = async (data) => {
+    const createdUserMission = await prisma.userMission.create({
+        data: { 
+            userId: Number(data.userId),
+            missionId: Number(data.missionId)
+        },
+    });
+    return createdUserMission;
+}

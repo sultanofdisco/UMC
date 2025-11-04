@@ -1,5 +1,4 @@
-import { response } from "express";
-import { responseFromUser, responseFromReview } from "../dtos/user.dto.js";
+import { responseFromUser, responseFromReview, userMissionToResponse } from "../dtos/user.dto.js";
 import {
     addUser,
     getUser,
@@ -7,7 +6,9 @@ import {
     setPreference,
     getStoreById,
     addReview,
-    getReview
+    getReview,
+    findActiveMission,
+    addMission
 } from "../repositories/user.repository.js";
 
 export const userSignUp = async (data) => {
@@ -52,4 +53,16 @@ export const addUserReview = async (data) => {
 
     const review = await getReview(reviewID);
     return responseFromReview(review);
+}
+
+export const addUserMission = async (data) => {
+
+    const activeMission = await findActiveMission(data.missionId, data.userId);
+    if (activeMission) throw new Error("이미 도전 중인 미션입니다.");
+
+    const userMission = addMission({
+        userId: data.userId,
+        missionId: data.missionId
+    });
+    return userMissionToResponse(userMission);
 }

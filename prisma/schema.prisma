@@ -72,3 +72,14 @@ model Store {
 
   @@map("store")
 }
+
+model UserMission {
+  id        Int      @id @default(autoincrement())
+  userId    Int      @map("user_id")
+  missionId Int      @map("mission_id")
+  status       String    @default("IN_PROGRESS") @db.VarChar(50)
+  startedAt    DateTime  @default(now()) @map("started_at") @db.Timestamp(6)
+  completedAt  DateTime? @map("completed_at")   @db.Timestamp(6)
+
+  @@map("user_mission")
+}

@@ -44,3 +44,17 @@ export const responseFromReview = (review) => {
     images: review.images  || []
   };
 }
+
+export const bodyToUserMission = (body) => {
+    return {
+        userId: Number(body.userId),  
+        missionId: Number(body.missionId)
+    };
+}
+
+export const userMissionToResponse = (userMission) => {
+    return {
+        userId: userMission.userId,
+        missionId: userMission.missionId
+    };
+} 
