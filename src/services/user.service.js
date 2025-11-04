@@ -1,3 +1,4 @@
+import bycrypt from "bcrypt";
 import { responseFromUser, responseFromReview, userMissionToResponse } from "../dtos/user.dto.js";
 import {
     addUser,
@@ -12,6 +13,7 @@ import {
 } from "../repositories/user.repository.js";
 
 export const userSignUp = async (data) => {
+    const hashedPassword = await bycrypt.hash(data.password, 10);
     const joinUserId = await addUser({
         email: data.email,
         name: data.name,
@@ -20,6 +22,7 @@ export const userSignUp = async (data) => {
         address: data.address,
         detailAddress: data.detailAddress,
         phoneNumber: data.phoneNumber,
+        password: hashedPassword
     });
 
     if (joinUserId == null) {
