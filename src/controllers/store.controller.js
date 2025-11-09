@@ -8,5 +8,5 @@ export const handleAddMission = async (req, res, next) => {
     
     const mission = await addStoreMission(bodyToMission(req.body));
     
-    res.status(StatusCodes.OK).json({ result: "미션 추가 성공!" });     
+    res.status(StatusCodes.OK).success(mission);     
 }

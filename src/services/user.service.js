@@ -11,6 +11,7 @@ import {
     findActiveMission,
     addMission
 } from "../repositories/user.repository.js";
+import { AlreadyActiveMissionError, DuplicateUserEmailError, NoStoreError } from "../err.js";    
 
 export const userSignUp = async (data) => {
     const hashedPassword = await bycrypt.hash(data.password, 10);
@@ -26,7 +27,7 @@ export const userSignUp = async (data) => {
     });
 
     if (joinUserId == null) {
-        throw new Error("이미 존재하는 이메일입니다");
+        throw new DuplicateUserEmailError("이미 존재하는 이메일입니다", data);
     }
 
     for (const preference of data.preferences) {
@@ -43,7 +44,7 @@ export const addUserReview = async (data) => {
 
     const store = await getStoreById(data.storeId);
     if (!store) {
-        throw new Error("존재하지 않는 음식점입니다.");
+        throw new NoStoreError("존재하지 않는 음식점입니다.");
     }
 
     const reviewID = await addReview({
@@ -61,7 +62,7 @@ export const addUserReview = async (data) => {
 export const addUserMission = async (data) => {
 
     const activeMission = await findActiveMission(data.missionId, data.userId);
-    if (activeMission) throw new Error("이미 도전 중인 미션입니다.");
+    if (activeMission) throw new AlreadyActiveMissionError("이미 도전 중인 미션입니다.");
 
     const userMission = addMission({
         userId: data.userId,
